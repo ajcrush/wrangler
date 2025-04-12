@@ -16,8 +16,9 @@
 
 package io.cdap.wrangler.api.parser;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.cdap.wrangler.api.annotations.PublicEvolving;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +26,15 @@ import java.util.regex.Pattern;
  * Token class for handling time duration values with units (e.g., 100ms, 2h, 30m, 1d)
  */
 @PublicEvolving
-public class TimeDuration extends Token {
+public class TimeDuration implements Token {
   private static final Pattern TIME_DURATION_PATTERN = Pattern.compile("([0-9]+(?:\\.[0-9]+)?)([nµm]?[s]|[mhdy]|ms)");
+  private final String originalValue;
+  private final TokenType type;
   private final long nanoseconds;
 
   public TimeDuration(String value) {
-    super(TokenType.TIME_DURATION, value);
+    this.originalValue = value;
+    this.type = TokenType.TIME_DURATION;
     this.nanoseconds = parseNanoseconds(value);
   }
 
@@ -63,6 +67,25 @@ public class TimeDuration extends Token {
       default:
         throw new IllegalArgumentException("Unsupported time duration unit: " + unit);
     }
+  }
+
+  @Override
+  public Object value() {
+    return originalValue;
+  }
+
+  @Override
+  public TokenType type() {
+    return type;
+  }
+
+  @Override
+  public JsonElement toJson() {
+    JsonObject object = new JsonObject();
+    object.addProperty("type", type.name());
+    object.addProperty("value", originalValue);
+    object.addProperty("nanoseconds", nanoseconds);
+    return object;
   }
 
   public long getNanoseconds() {

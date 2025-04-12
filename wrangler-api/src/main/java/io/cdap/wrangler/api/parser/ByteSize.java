@@ -16,8 +16,9 @@
 
 package io.cdap.wrangler.api.parser;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.cdap.wrangler.api.annotations.PublicEvolving;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +26,15 @@ import java.util.regex.Pattern;
  * Token class for handling byte size values with units (e.g., 1KB, 2.5MB, 100GB)
  */
 @PublicEvolving
-public class ByteSize extends Token {
+public class ByteSize implements Token {
   private static final Pattern BYTE_SIZE_PATTERN = Pattern.compile("([0-9]+(?:\\.[0-9]+)?)([KkMmGgTtPpEe]?[Bb])");
+  private final String originalValue;
+  private final TokenType type;
   private final long bytes;
 
   public ByteSize(String value) {
-    super(TokenType.BYTE_SIZE, value);
+    this.originalValue = value;
+    this.type = TokenType.BYTE_SIZE;
     this.bytes = parseBytes(value);
   }
 
@@ -61,6 +65,25 @@ public class ByteSize extends Token {
       default:
         throw new IllegalArgumentException("Unsupported byte size unit: " + unit);
     }
+  }
+
+  @Override
+  public Object value() {
+    return originalValue;
+  }
+
+  @Override
+  public TokenType type() {
+    return type;
+  }
+
+  @Override
+  public JsonElement toJson() {
+    JsonObject object = new JsonObject();
+    object.addProperty("type", type.name());
+    object.addProperty("value", originalValue);
+    object.addProperty("bytes", bytes);
+    return object;
   }
 
   public long getBytes() {
