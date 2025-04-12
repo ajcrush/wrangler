@@ -1,0 +1,67 @@
+# AI-Assisted Development Prompts for Wrangler Enhancement
+
+## Initial Setup and Understanding
+1. "Help me understand the structure of the Wrangler codebase, particularly focusing on the grammar and parser components."
+2. "What are the key files I need to modify to add support for byte size and time duration units in Wrangler?"
+
+## Grammar Modifications
+3. "How should I modify the Directives.g4 grammar file to add support for byte size and time duration units?"
+4. "What lexer rules and fragments do I need to add for BYTE_SIZE and TIME_DURATION tokens?"
+5. "How should I update the parser rules to handle these new token types?"
+
+## Token Implementation
+6. "Help me implement the ByteSize and TimeDuration token classes with proper unit conversion logic."
+7. "What methods should I include in these classes for unit conversion and value retrieval?"
+8. "How should I handle edge cases and invalid inputs in the token classes?"
+
+## Directive Implementation
+9. "Help me design the AggregateStats directive that will use the new token types."
+10. "What parameters should the directive accept and how should it handle different aggregation types?"
+11. "How should I implement the unit conversion logic in the directive?"
+
+## Testing
+12. "Help me create comprehensive test cases for the ByteSize and TimeDuration classes."
+13. "What test cases should I include for the AggregateStats directive?"
+14. "How should I structure the test assertions to verify correct unit conversion and aggregation?"
+
+## Debugging and Refinement
+15. "I'm getting a parsing error with the new grammar rules. How can I debug this?"
+16. "The unit conversion in the AggregateStats directive seems off. How can I verify the calculations?"
+17. "How can I improve the error handling in the token classes?"
+
+## Documentation
+18. "Help me write clear documentation for the new byte size and time duration features."
+19. "What examples should I include in the README to demonstrate the new functionality?"
+20. "How should I document the supported units and conversion factors?"
+
+## Final Review
+21. "Review the complete implementation and suggest any improvements or optimizations."
+22. "Are there any edge cases or scenarios I might have missed in the implementation?"
+23. "How can I make the code more maintainable and extensible for future enhancements?"
+
+## Build and Integration
+24. "How do I regenerate the ANTLR parser/lexer code after modifying the grammar?"
+25. "What build commands should I run to verify the implementation?"
+26. "How can I ensure the new features integrate well with existing Wrangler functionality?"
+
+## Performance Considerations
+27. "How can I optimize the unit conversion calculations for better performance?"
+28. "What caching or optimization techniques can I apply to the token classes?"
+29. "How should I handle large numbers and potential overflow in the calculations?"
+
+## Error Handling
+30. "What validation should I add to ensure proper error messages for invalid inputs?"
+31. "How should I handle unit conversion errors and edge cases?"
+32. "What logging should I add to help with debugging?"
+
+## Code Style and Best Practices
+33. "How can I ensure the code follows Wrangler's coding standards?"
+34. "What documentation comments should I add to the new classes?"
+35. "How should I structure the test classes for maximum clarity and maintainability?"
+
+## Final Integration
+36. "How do I ensure the new features work correctly with existing Wrangler directives?"
+37. "What integration tests should I add to verify the complete functionality?"
+38. "How can I verify backward compatibility with existing recipes?"
+
+Note: These prompts were used iteratively throughout the development process, with multiple iterations and refinements based on the responses and implementation progress. The actual development involved significant manual coding, testing, and debugging alongside the AI assistance. 

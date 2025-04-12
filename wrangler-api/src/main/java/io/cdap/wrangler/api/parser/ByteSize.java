@@ -1,0 +1,77 @@
+package io.cdap.wrangler.api.parser;
+
+import io.cdap.wrangler.api.annotations.PublicEvolving;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Token class for handling byte size values with units (e.g., 1KB, 2.5MB, 100GB)
+ */
+@PublicEvolving
+public class ByteSize extends Token {
+  private static final Pattern BYTE_SIZE_PATTERN = Pattern.compile("([0-9]+(?:\\.[0-9]+)?)([KkMmGgTtPpEe]?[Bb])");
+  private final long bytes;
+
+  public ByteSize(String value) {
+    super(TokenType.BYTE_SIZE, value);
+    this.bytes = parseBytes(value);
+  }
+
+  private long parseBytes(String value) {
+    Matcher matcher = BYTE_SIZE_PATTERN.matcher(value);
+    if (!matcher.matches()) {
+      throw new IllegalArgumentException("Invalid byte size format: " + value);
+    }
+
+    double number = Double.parseDouble(matcher.group(1));
+    String unit = matcher.group(2).toUpperCase();
+
+    switch (unit) {
+      case "B":
+        return (long) number;
+      case "KB":
+        return (long) (number * 1024);
+      case "MB":
+        return (long) (number * 1024 * 1024);
+      case "GB":
+        return (long) (number * 1024 * 1024 * 1024);
+      case "TB":
+        return (long) (number * 1024L * 1024 * 1024 * 1024);
+      case "PB":
+        return (long) (number * 1024L * 1024 * 1024 * 1024 * 1024);
+      case "EB":
+        return (long) (number * 1024L * 1024 * 1024 * 1024 * 1024 * 1024);
+      default:
+        throw new IllegalArgumentException("Unsupported byte size unit: " + unit);
+    }
+  }
+
+  public long getBytes() {
+    return bytes;
+  }
+
+  public double getKB() {
+    return bytes / 1024.0;
+  }
+
+  public double getMB() {
+    return bytes / (1024.0 * 1024);
+  }
+
+  public double getGB() {
+    return bytes / (1024.0 * 1024 * 1024);
+  }
+
+  public double getTB() {
+    return bytes / (1024.0 * 1024 * 1024 * 1024);
+  }
+
+  public double getPB() {
+    return bytes / (1024.0 * 1024 * 1024 * 1024 * 1024);
+  }
+
+  public double getEB() {
+    return bytes / (1024.0 * 1024 * 1024 * 1024 * 1024 * 1024);
+  }
+} 

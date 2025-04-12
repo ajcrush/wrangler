@@ -140,7 +140,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | BYTE_SIZE | TIME_DURATION
  ;
 
 ecommand
@@ -253,9 +253,13 @@ Bool
  | 'false'
  ;
 
-Number
- : Int ('.' Digit*)?
- ;
+// Byte size and time duration unit fragments
+fragment BYTE_UNIT: [KkMmGgTtPpEe]?[Bb];
+fragment TIME_UNIT: [nµm]?[s] | [mhdy] | 'ms';
+
+// Byte size and time duration tokens
+BYTE_SIZE: Number BYTE_UNIT;
+TIME_DURATION: Number TIME_UNIT;
 
 Identifier
  : [a-zA-Z_\-] [a-zA-Z_0-9\-]*
